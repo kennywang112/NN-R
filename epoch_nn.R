@@ -2,24 +2,26 @@
 set.seed(123)
 
 # 設定神經網絡參數
-input_features <- 32
-hidden_units <- 64
-#output_features <- 64
-output_features <- 1
+input_features <- 32 # N
+hidden_units <- 64 # M
+output_features <- 64
+#output_features <- 1
 learning_rate <- 0.01
 epochs <- 10
 
 # 創建隨機輸入和目標
 # (64, 32), 輸入為 inputs[1,] -> N-by-1 matrix
 inputs <- matrix(runif(64 * input_features, -1, 1), nrow = 64, ncol = input_features)
+inputs[1,] # 1st row = (32, 1)
 # (64, 1)
-targets <- matrix(runif(64 * output_features, -1, 1), nrow = 64, ncol = output_features)
+#targets <- matrix(runif(64 * output_features, -1, 1), nrow = 64, ncol = output_features)
+targets <- matrix(runif(64 * 1, -1, 1), nrow = 64, ncol = 1)
 
 # 初始化權重和偏差
 # runif創建均勻分布的隨機偏差，再做成對應矩陣
 # N-by-M matrix (32, 64)
 W_input_hidden <- matrix(runif(input_features * hidden_units, -1, 1), nrow = input_features, ncol = hidden_units)
-# N-by-1 matrix (64, 1)
+# M-by-1 matrix (64, 1)
 b_hidden <- matrix(runif(hidden_units, -1, 1), nrow = hidden_units, ncol = 1)
 # (64, 64)
 W_hidden_output <- matrix(runif(hidden_units * output_features, -1, 1), nrow = hidden_units, ncol = output_features)
@@ -31,9 +33,6 @@ tanh <- function(x) {
   (exp(x) - exp(-x)) / (exp(x) + exp(-x))
 }
 
-dim(inputs %*% W_input_hidden)
-dim(b_hidden)
-
 # 定義模型訓練函數
 train_model <- function(inputs, targets, W_input_hidden, b_hidden, W_hidden_output, b_output, learning_rate, epochs) {
   
@@ -43,7 +42,7 @@ train_model <- function(inputs, targets, W_input_hidden, b_hidden, W_hidden_outp
     hidden_activations <- tanh(t(W_input_hidden)%*%inputs + b_hidden)
     # (64, 64)*(64, 1) + (64, 1) = (64, 1)
     output_activations <- tanh(W_hidden_output%*%hidden_activations + b_output)
-    
+
     # 計算損失（這裡使用均方誤差）
     # (64,1) - (64, 1) = (64, 1)
     loss <- mean((output_activations - targets)^2)
@@ -52,19 +51,23 @@ train_model <- function(inputs, targets, W_input_hidden, b_hidden, W_hidden_outp
     # 反向傳播
     # (64, 1) - (64, 1) = (64, 1)
     output_error <- output_activations - targets
-    # (64, 1)*(64, 64)x(64, 1)
-    hidden_error <- output_error %*% t(W_hidden_output) * (1 - hidden_activations^2)
+    # 計算輸出層誤差對隱藏層輸出影響，再乘上tanh的導數
+    # (64, 64)*(64, 1)x(64, 1) = (64, 1)
+    hidden_error <- t(W_hidden_output)%*%output_error * (1 - hidden_activations^2)
     
     # 更新權重和偏差
-    # (64, 64) - (1, 64)*(64, 1)
-    W_hidden_output <- W_hidden_output - learning_rate * t(hidden_activations) %*% output_error
+    # (64, 64) - (64, 1)*(1, 64) = (64, 64)
+    W_hidden_output <- W_hidden_output - learning_rate * hidden_activations %*% t(output_error)
+    # (64, 1) - (64, 1) = (64, 1)
     b_output <- b_output - learning_rate * colSums(output_error)
-    W_input_hidden <- W_input_hidden - learning_rate * t(inputs) %*% hidden_error
+    # (32, 64) - (32, 1)*(1, 64) = (32, 64)
+    W_input_hidden <- W_input_hidden - learning_rate * inputs %*% t(hidden_error)
+    # (64, 1) - (64, 1) = (64, 1)
     b_hidden <- b_hidden - learning_rate * colSums(hidden_error)
-    b_hidden <- matrix(b_hidden, nrow = 1, ncol = ncol(hidden_activations))
+    b_hidden <- matrix(b_hidden, nrow = nrow(hidden_activations), ncol = 1)
     
   }
-  
+
   return(list(W_input_hidden = W_input_hidden, b_hidden = b_hidden, W_hidden_output = W_hidden_output, b_output = b_output))
 }
 
