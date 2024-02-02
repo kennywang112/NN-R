@@ -19,15 +19,15 @@ b <- random_array(dim = c(output_features, 1))
 
 output_sequence <- array(0, dim = c(timestamp, output_features))
 
-for (i in 1:nrow(inputs)) {
+for (i in 1 : nrow(inputs)) {
   
   input_t <- inputs[i,]
   
-  # 維度：(64,32)*(32,1) + (64,64)*(64,1) + (64,1) = (64,1)
-  output_t <- tanh(as.numeric((W%*% input_t) + (U%*%state_t) +b)) # 將輸入與當前狀態(前一個輸出)結合
+  # 維度：(64, 32) * (32, 1) + (64, 64) * (64, 1) + (64,1) = (64, 1)
+  output_t <- tanh(as.numeric((W %*% input_t) + (U %*% state_t) + b)) # 將輸入與當前狀態(前一個輸出)結合
   output_sequence[i,] <- as.numeric(output_t)
   # 1:64
   state_t <- output_t # 更新下一個時間步的狀態
   
-  cat('state :',state_t,"\n")
+  cat('state :', state_t, "\n")
 }

@@ -3,7 +3,7 @@ set.seed(123)
 
 # 設定神經網絡參數
 input_features <- 3 # N, variables
-hidden_units <- 4 # M
+hidden_units <- 4 # M, neurons
 output_features <- 4
 learning_rate <- 0.01
 epochs <- 5
@@ -88,23 +88,7 @@ train_model <- function(
 }
 
 # 訓練模型
-batch_size <- 2
+batch_size <- 5
 trained_model <- train_model(inputs, targets, W_input_hidden, b_hidden, 
                              W_output_hidden, b_output, learning_rate, epochs, batch_size)
-
-# 要預測的資料
-new_data <- matrix(c(0.5, -0.3, 0.8), nrow = 1, ncol = 3)
-
-# 使用訓練好的模型進行預測
-# (1, 3)*(3, 4) + (1, 4) = (1, 4)
-hidden_layer_input <- new_data %*% trained_model$W_input_hidden + trained_model$b_hidden
-hidden_layer_output <- tanh(hidden_layer_input)
-# (1, 4)*(4, 1) + (1, 1) = (1, 1)
-output_layer_input <- hidden_layer_output %*% trained_model$W_output_hidden + trained_model$b_output
-predicted_output <- tanh(output_layer_input)
-
-# 預測結果
-cat("Predicted output:", predicted_output, "\n")
-
-
 
