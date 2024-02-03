@@ -2,6 +2,10 @@
 
 To enhance my understanding of neural networks and their variants, I am constructing basic neural networks for this project without relying on external packages. I will continually update and list the lessons learned below.
 
+## Rust 
+Coding with Rust is just a leisure, but you can learn it with the link below!
+`https://www.rust-lang.org/learn/get-started`
+
 ## Model
 
 1. Neural Network
