@@ -1,7 +1,9 @@
-use rand::prelude::*;
 use nalgebra::DMatrix;
 
-pub fn FeedForward(sigmoid: fn(f64) -> f64) {
+use crate::activation_function::sigmoid;
+use crate::matrix_function::random_matrix;
+
+pub fn feedforward() {
 
     // 初始化參數
     let input_size: usize = 2;
@@ -33,14 +35,6 @@ pub fn FeedForward(sigmoid: fn(f64) -> f64) {
     // (2, 3) * (3, 1) + (2, 1) = (2, 1)
     let output_layer_input = &hidden_layer_output * &weights_hidden_output + &bias_output;
     let output_layer_output = output_layer_input.map(|x| sigmoid(x));
-    println!("output_layer_output: \n{}", output_layer_output);
 
     println!("output_layer_output: \n{}", output_layer_output);
-}
-
-fn random_matrix(rows: usize, cols: usize, min: f64, max: f64) -> DMatrix<f64> {
-
-    let mut rng = rand::thread_rng();
-    DMatrix::from_fn(rows, cols, |_, _| rng.gen_range(min..max))
-
 }

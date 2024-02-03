@@ -1,10 +1,16 @@
-mod nn_feedforward;
-use nn_feedforward::FeedForward;  
-
 mod activation_function;
-use activation_function::sigmoid;
+mod matrix_function;
+
+mod nn_feedforward;
+use nn_feedforward::feedforward;
+
+mod nn_backpropogation;
+use nn_backpropogation::backpropogation;
 
 fn main() {
 
-    FeedForward(sigmoid);
+    // feedforward();
+
+    backpropogation();
+
 }

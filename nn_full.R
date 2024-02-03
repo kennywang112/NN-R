@@ -63,7 +63,7 @@ train_model <- function(
       # 反向傳播
       # (4, 1) - (4, 1) = (4, 1)
       output_error <- predicted_output - targets_batch
-      # (4, 1)x(4, 1) x (4, 1) = (4, 1)
+      # (4, 1) x (4, 1) x (4, 1) = (4, 1)
       # 計算輸出層誤差對隱藏層輸出影響，再乘上tanh的導數
       output_delta <- output_error * predicted_output * (1 - predicted_output)
       # (4, 1) * (1, 4) = (4, 4)
