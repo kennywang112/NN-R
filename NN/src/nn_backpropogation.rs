@@ -1,5 +1,4 @@
-use rand::prelude::*;
-use nalgebra::{DMatrix, DVector};
+use nalgebra::DMatrix;
 
 use crate::activation_function::{sigmoid, sigmoid_derivative};
 use crate::matrix_function::random_matrix;
@@ -11,21 +10,18 @@ pub fn backpropogation() {
     let hidden_size = 3;
     let output_size = 1;
     let learning_rate = 0.1;
-    let epochs = 10000;
+    let epochs = 10;
 
     // 初始化權重和偏差
     let mut weights_input_hidden = random_matrix(input_size, hidden_size, -1.0, 1.0);
     let mut weights_hidden_output = random_matrix(hidden_size, output_size, -1.0, 1.0);
     let mut bias_hidden = random_matrix(2, hidden_size, -1.0, 1.0);
     let mut bias_output = random_matrix(2, output_size, -1.0, 1.0);
-
     // 定義輸入數據和目標輸出
     let input_data = DMatrix::from_row_slice(2, input_size, &[0.5, 0.8, 0.1, 0.2]);
     let target_output = DMatrix::from_row_slice(2, output_size, &[0.6, 0.4]);
 
-    let learning_rate = 0.1;
-
-    for epoch in 1 ..= 5 {
+    for _epoch in 1 ..= epochs {
         // 前向傳播
         // (2, 2) * (2, 3) + (2, 3) = (2, 3)
         let hidden_layer_input = &input_data * &weights_input_hidden + &bias_hidden;
@@ -33,11 +29,9 @@ pub fn backpropogation() {
         // (2, 3) * (3, 1) + (2, 1) = (2, 1)
         let output_layer_input = &hidden_layer_output * &weights_hidden_output + &bias_output;
         let output_layer_output = output_layer_input.map(|x| sigmoid(x));
-        // println!("output_layer_output: \n{:?}", output_layer_output);
         // 計算誤差
         // (2, 1) - (2, 1) = (2, 1)
         let error = &target_output - &output_layer_output;
-        // println!("error: \n{:?}", error);
         // 計算梯度
         // (2, 1)
         let output_delta = error.iter()
@@ -69,20 +63,10 @@ pub fn backpropogation() {
         // (2, 3) += (2, 2) * (2, 3)
         weights_input_hidden += &dot_products_input_matrix.transpose() * &hidden_delta_matrix;
 
-        let bias_out: Vec<_> = output_delta_matrix.iter()
-            .map(|&x| x * learning_rate)
-            .collect();
-        let bias_out_matrix = DMatrix::from_column_slice(2, 1, &bias_out);
         bias_output += learning_rate * output_delta_matrix;
-
-        let bias_hid: Vec<_> = hidden_delta_matrix.iter()
-            .map(|&x| x * learning_rate)
-            .collect();
-        let bias_hid_matrix = DMatrix::from_column_slice(2, 3, &bias_hid);
         bias_hidden += learning_rate * hidden_delta_matrix;
 
-        println!("Final output after training:\n{}", hidden_error);
+        // println!("Final output after training:\n{}", hidden_error);
     }
 
-    // println!("Final output after training:\n{}", output_layer_output);
 }

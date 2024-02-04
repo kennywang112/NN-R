@@ -7,10 +7,13 @@ use nn_feedforward::feedforward;
 mod nn_backpropogation;
 use nn_backpropogation::backpropogation;
 
+mod rnn;
+use rnn::recurrent;
+
 fn main() {
 
-    // feedforward();
-
+    feedforward();
     backpropogation();
+    recurrent();
 
 }

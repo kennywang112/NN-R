@@ -6,7 +6,7 @@ pub fn sigmoid(x: f64) -> f64 {
 }
 
 // softmax
-pub fn softmax(x: Vec<f64>) -> Vec<f64> {
+pub fn _softmax(x: Vec<f64>) -> Vec<f64> {
     
     let max_x = x.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
     let exp_x: Vec<f64> = x.iter().map(|&val| (val - max_x).exp()).collect();
@@ -16,7 +16,7 @@ pub fn softmax(x: Vec<f64>) -> Vec<f64> {
 }
 
 // tanh
-pub fn tanh(x: f64) -> f64 {
+pub fn _tanh(x: f64) -> f64 {
     (f64::exp(x) - f64::exp(-x)) / (f64::exp(x) + f64::exp(-x))
 }
 
