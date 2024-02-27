@@ -1,14 +1,7 @@
-# Backpropagation
-
-# 定義 sigmoid 函數和其導數
-sigmoid <- function(x) {
-  return(1 / (1 + exp(-x)))
-}
-
+source("activation_function.R")
 sigmoid_derivative <- function(x) {
   return(x * (1 - x))
 }
-
 # 初始化參數
 input_size <- 2
 hidden_size <- 3

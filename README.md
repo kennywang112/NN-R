@@ -11,6 +11,7 @@ To enhance my understanding of neural networks and their variants, I am construc
 5.  Gated Recurrent Unit
 
 ## Activation Function use
+
 | Type                         | last activation | loss function           |
 |------------------------------|-----------------|-------------------------|
 | binary                       | sigmoid         | binary_crossentropy     |

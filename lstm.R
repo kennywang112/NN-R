@@ -1,13 +1,4 @@
-# 定義 LSTM 相關函數
-sigmoid <- function(x) {
-  1 / (1 + exp(-x))
-}
-
-# 定義 tanh 函數
-tanh <- function(x) {
-  (exp(x) - exp(-x)) / (exp(x) + exp(-x))
-}
-
+source("activation_function.R")
 # 設定參數
 timestamp <- 100
 input_features <- 32

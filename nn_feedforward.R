@@ -1,4 +1,3 @@
-# Feedforward
 source("activation_function.R")
 # 初始化參數
 input_size <- 2

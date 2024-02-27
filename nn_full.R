@@ -1,3 +1,4 @@
+source("activation_function.R")
 # 設定隨機種子以確保結果可重複
 set.seed(123)
 
@@ -25,11 +26,6 @@ b_hidden <- matrix(runif(hidden_units, -1, 1), nrow = hidden_units, ncol = hidde
 W_output_hidden <- matrix(runif(1 * output_features, -1, 1), nrow = output_features, ncol = 1)
 # (4, 1)
 b_output <- matrix(runif(output_features, -1, 1), nrow = output_features, ncol = 1)
-
-# 定義激活函數（這裡使用tanh）
-tanh <- function(x) {
-  (exp(x) - exp(-x)) / (exp(x) + exp(-x))
-}
 
 # 定義模型訓練函數
 train_model <- function(
@@ -91,4 +87,3 @@ train_model <- function(
 batch_size <- 5
 trained_model <- train_model(inputs, targets, W_input_hidden, b_hidden, 
                              W_output_hidden, b_output, learning_rate, epochs, batch_size)
-
