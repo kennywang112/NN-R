@@ -49,7 +49,7 @@ selu <- function(x, alpha = 1.67326, scale = 1.0507) {
 # - The gradient of negative input being zero implies that for the activation in that region, weights will not be updated during backpropagation, leading to the emergence of dead neurons that never get activated, similarity as Dead ReLU.
 # - We can consider it as a probabilistic version or 'soft' version of the argmax function.
 softmax <- function(x) {
-  exp_x <- exp(x - max(x))  # 防止数值溢出
+  exp_x <- exp(x - max(x))
   return(exp_x / sum(exp_x))
 }
 # Sigmoid

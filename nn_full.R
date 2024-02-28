@@ -21,12 +21,11 @@ targets <- matrix(runif(4 * 1, -1, 1), nrow = 4, ncol = 1)
 # N-by-M matrix (3, 4)
 W_input_hidden <- matrix(runif(input_features * hidden_units, -1, 1), nrow = input_features, ncol = hidden_units)
 # M-by-1 matrix (4, 4)
-b_hidden <- matrix(runif(hidden_units, -1, 1), nrow = hidden_units, ncol = hidden_units)
+b_hidden <- runif(hidden_units, -1, 1)
 # (4, 1)
 W_output_hidden <- matrix(runif(1 * output_features, -1, 1), nrow = output_features, ncol = 1)
 # (4, 1)
-b_output <- matrix(runif(output_features, -1, 1), nrow = output_features, ncol = 1)
-
+b_output <- runif(output_features, -1, 1)
 # 定義模型訓練函數
 train_model <- function(
     inputs, targets, W_input_hidden, b_hidden, 
@@ -79,7 +78,6 @@ train_model <- function(
       b_hidden <- b_hidden + learning_rate * rowSums(hidden_layer_delta)
     }
   }
-
   return(list(W_input_hidden = W_input_hidden, b_hidden = b_hidden, W_output_hidden = W_output_hidden, b_output = b_output))
 }
 
