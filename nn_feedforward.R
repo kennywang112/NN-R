@@ -1,5 +1,5 @@
 source("activation_function.R")
-# 初始化參數
+# Parameters
 input_size <- 2
 hidden_size <- 3
 output_size <- 1
